@@ -11,8 +11,10 @@ const { port, mongoUrl, secret } = config;
 const app = express();
 
 
+
 // Conectar aplicación a MongoDB
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
+mongoose.set('useFindAndModify', false);
 
 
 app.set('config', config);

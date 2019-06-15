@@ -125,7 +125,10 @@ module.exports = (app, next) => {
     }
 
     User.create({ email, password })
-      .then(doc => resp.json(omitPrivateProps(doc)))
+      .then(() => 
+        User.find()
+      )
+      .then(data => resp.json(data))
       .catch(err => (
         (/duplicate key/.test(err.message))
           ? next(403)
@@ -153,8 +156,12 @@ module.exports = (app, next) => {
 
   app.delete('/users/:uid', requireAuth, (req, resp, next) => {
     req.user.remove()
-      .then(doc => resp.json(omitPrivateProps(doc)))
+    User.find()
+      .then(doc => {
+        resp.json(doc)
+      })
       .catch(next);
+      
   });
 
 
